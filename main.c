@@ -178,8 +178,8 @@ int main(){
   Salle* map;
   map =createurMap();
   refresh();
-  noecho();
-  curs_set(0);
+  noecho(); //Désactive l'affichage des caractères saisis
+  curs_set(0);// cache le curseur
   createurPorte(map,0);
   mouvementPerso(map);
   getch();
