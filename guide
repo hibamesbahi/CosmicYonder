@@ -1,0 +1,12 @@
+guide des fonctions projet Cosmic Yonder
+
+createurSalle() --> salle en memoire
+	------>	appelle verifSuperpo
+	------>	affichage de la salle
+
+
+
+
+createurPorte()  nb porte 1-4 depend de place mempoire restante 
+compteurPorte() ---> nb de salles restantes 
+verifSuperpo()  ---> do while(coodr mur colision avec # ou / )
