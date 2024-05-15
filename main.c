@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
-
+#define NB_SALLE_MAX 8
 //********************** DECLARATION VARIABLES ************************
 
 //caractères
@@ -75,20 +75,24 @@ Salle* createurMap(){
   //nombre de salle en memoire
     //arrengement des salle depend de la graine et de l'ordre.
   int graine = rand(); //graine temporaire
-  int nb_salle= 4+(graine%10);
+  int nb_salle= 4+(graine%NB_SALLE_MAX);
   p_map=malloc(sizeof(Salle)*nb_salle);
   p_map[0].nb_porte=4;
   p_map[0]=salleSpawn(p_map);
   return p_map;
 }
-
-
+(p_map+indice)
 //creation des salle au fur et a mesure
-void createurSalle(){
+void createurSalle(, int indice){
 
 //creation sur le moment
   //si memoire finie salle sans porte
     //piece ractangulaire, m*n , avec des porte
+//creation salle en memoire, pos porte
+//verif superposition
+//afficher la salle
+
+//if superposition, modifier les coord petit a petit (do while) 
 
 
 
@@ -126,12 +130,13 @@ void mouvementPerso(Salle *map){
   int posY=map[0].position.y+map[0].largeur/2; //initialisation pos
   keypad(stdscr, TRUE);
   refresh();
-
+ mvaddch(posY, posX, '@');
      while(1)
       {c=getch();
         switch (c) {
         case KEY_DOWN:
           if(mvinch(posY+1,posX)!='#'){
+          //creation salle if(porte )
           mvaddch(posY, posX, ' ');
           mvaddch(++posY, posX, '@');}
           refresh();
