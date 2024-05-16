@@ -10,3 +10,4 @@ createurSalle() --> salle en memoire
 createurPorte()  nb porte 1-4 depend de place mempoire restante 
 compteurPorte() ---> nb de salles restantes 
 verifSuperpo()  ---> do while(coodr mur colision avec # ou / )
+makefile --> compilation separé mettre les foinction dans des fichiers et appeler les fichiers
