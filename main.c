@@ -68,6 +68,31 @@ Salle salleSpawn(Salle* p_map)
     printw("\n");
 
   }
+
+  Salle *salle= (&p_map[0]);
+
+  salle->nb_porte=4;
+  //haut
+  salle->pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+  salle->pos_porte[0].y=salle->position.y;
+
+  //bas
+  salle->pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+  salle->pos_porte[1].y=salle->position.y+salle->largeur;
+
+  //gauche
+  salle->pos_porte[2].x=salle->position.x;
+  salle->pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+
+  //droite
+  salle->pos_porte[3].x=salle->position.x+salle->longueur;
+  salle->pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+//dessiner les porte
+          mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+          mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+          mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+          mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
   return p_map[0];
 
 }
@@ -159,6 +184,178 @@ if(map==NULL)exit  (1);
 }
 
 
+void createurPorte(Salle *p_map, int num, int ind_porte){
+
+//une porte aleatoire deja 
+//nb porte = rand ()
+  Salle *salle= (&p_map[num]);
+
+int indice1;
+int indice2;
+int indice3;
+mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+          mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+          mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+          mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+switch (salle->nb_porte) {
+case 1:
+  //ne rien faire
+  break;
+
+case 2: 
+// placer une porte aléatoirement
+  indice1= (ind_porte+1+rand()%2)%4 ;  //indice de la porte de passage plus une valeure entre 1 et 3 ;
+    switch (indice1){
+  case 0: //porte du haut
+    p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[0].y=salle->position.y;
+    mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+
+    break;
+  case 1: //porte du bas
+    p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
+    mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+
+    break;
+  case 2: //porte de gauche
+    p_map[num].pos_porte[2].x=salle->position.x;
+    p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+
+    break;
+
+  case 3: //porte de droite
+    p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
+    p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
+    break;
+  }
+  break;
+
+case 3:
+  //faire 2 porte de plus
+  indice1= ind_porte +1+rand()%1;
+  indice2= indice1+1;
+  indice1= (ind_porte+1+rand()%2)%4 ;  //indice de la porte de passage plus une valeure entre 1 et 3 ;
+    switch (indice1){
+  case 0: //porte du haut
+    p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[0].y=salle->position.y;
+
+    p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
+    mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+    mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+
+
+    break;
+  case 1: //porte du bas
+    p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
+    p_map[num].pos_porte[2].x=salle->position.x;
+    p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+    mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+
+
+    break;
+  case 2: //porte de gauche
+    p_map[num].pos_porte[2].x=salle->position.x;
+    p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
+    p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+    mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
+
+    break;
+
+  case 3: //porte de droite
+    p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
+    p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[0].y=salle->position.y;
+    mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+    mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
+
+
+    break;
+  }
+  break;
+case 4 :
+indice1=(ind_porte + 1)%4;
+indice2=(ind_porte + 2)%4;
+indice3=(ind_porte + 3)%4;
+  switch (indice1){
+  case 0: //porte du haut
+    p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[0].y=salle->position.y;
+    p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
+    p_map[num].pos_porte[2].x=salle->position.x;
+    p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+    mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+    mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+
+
+
+    break;
+  case 1: //porte du bas
+    p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
+    p_map[num].pos_porte[2].x=salle->position.x;
+    p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
+    p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+    mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+    mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
+
+
+    break;
+  case 2: //porte de gauche
+    p_map[num].pos_porte[2].x=salle->position.x;
+    p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
+    p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[0].y=salle->position.y;
+    mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+    mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
+    mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
+
+
+    break;
+
+  case 3: //porte de droite
+    p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
+    p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
+    p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[0].y=salle->position.y;
+    p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
+    p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
+    mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+    mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
+    mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+
+    break;
+  }
+break;  
+ default:
+ printf("erreur\n");
+ break;
+}  
+
+
+}
+
+
 //************************* createur salle ***********************
 
 //creation des salle au fur et a mesure
@@ -169,12 +366,8 @@ void createurSalle(Salle* map, int y, int x, char cote, int indice){
   //creation salle en memoire, pos porte
   
 Salle nouv_salle; 
-int ind_porte;
-/*membre de salle: 
-  nb_porte; rand ()%3+1
-  Position pos_porte[4];
-  
-  Position position;*/
+int ind_porte; 
+nouv_salle.nb_porte=(rand()%3)+1;
   
   nouv_salle.longueur=(rand()%LONG_MAX)+3;
   nouv_salle.largeur=(rand()%LARG_MAX)+3;
@@ -182,25 +375,25 @@ int ind_porte;
 
     switch(cote){
   case 'h': 
-      ind_porte=0;
+      ind_porte=1;
       y--;
       place_perso.x=x;
       place_perso.y=y-1;
       break;
   case 'b': 
-      ind_porte=1;
+      ind_porte=0;
       y++;
       place_perso.x=x;
       place_perso.y=y+1;
       break;
   case 'g': 
-      ind_porte=2;
+      ind_porte=3;
       x--;
       place_perso.x=x-1;
       place_perso.y=y;
       break;
   case 'd': 
-      ind_porte=3;
+      ind_porte=2;
       x++;
       place_perso.x=x+1;
       place_perso.y=y;
@@ -211,20 +404,20 @@ int ind_porte;
   
     switch(cote){
   case 'h': 
-      nouv_salle.position.x=1+x-(rand()%(nouv_salle.longueur-2)) ;
+      nouv_salle.position.x=x-(rand()%(nouv_salle.longueur-2))-1 ;
       nouv_salle.position.y= y-nouv_salle.largeur;
       break;
   case 'b': 
-      nouv_salle.position.x=1+x-(rand()%(nouv_salle.longueur-2)) ;
+      nouv_salle.position.x=x-(rand()%(nouv_salle.longueur-2))-1 ;
       nouv_salle.position.y= y;
       break;
   case 'g': 
       nouv_salle.position.x=x-nouv_salle.longueur ;
-      nouv_salle.position.y= 1+y-(rand()%(nouv_salle.largeur-2));
+      nouv_salle.position.y= y-(rand()%(nouv_salle.largeur-2))-1;
       break;
   case 'd': 
       nouv_salle.position.x= x;
-      nouv_salle.position.y= 1+y-(rand()%(nouv_salle.largeur-2));
+      nouv_salle.position.y= y-(rand()%(nouv_salle.largeur-2))-1;
       break;        
   }
 
@@ -261,6 +454,8 @@ verifSuperpo(map, indice, nouv_salle);
    
   }
 
+  createurPorte(map, indice, ind_porte);
+
   mvaddch(y,x,'/');
   mvaddch(place_perso.y,place_perso.x,'@');
   //faire des porte sachant que 1 porte deja faite
@@ -275,30 +470,6 @@ void checkEmplacement (){
 
 }
 
-void createurPorte(Salle *p_map, int num){
-
-  Salle *salle= (&p_map[num]);
-  //haut
-  p_map[num].pos_porte[0].x=(rand()%(salle->longueur-2))+salle->position.x+1;
-  p_map[num].pos_porte[0].y=salle->position.y;
-
-  //bas
-  p_map[num].pos_porte[1].x=(rand()%(salle->longueur-2))+salle->position.x+1;
-  p_map[num].pos_porte[1].y=salle->position.y+salle->largeur;
-
-  //gauche
-  p_map[num].pos_porte[2].x=salle->position.x;
-  p_map[num].pos_porte[2].y=(rand()%(salle->largeur-2))+salle->position.y+1;
-
-  //droite
-  p_map[num].pos_porte[3].x=salle->position.x+salle->longueur;
-  p_map[num].pos_porte[3].y=(rand()%(salle->largeur-2))+salle->position.y+1;
-//dessiner les porte
-          mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
-          mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
-          mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
-          mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
-}
 
 void mouvementPerso(Salle *map){
 
@@ -393,7 +564,6 @@ int main(){
   refresh();
   noecho();
   curs_set(0);
-  createurPorte(map,0);
   mouvementPerso(map);
   getch();
   endwin();
