@@ -3,9 +3,11 @@
 #include <ncurses.h>
 #include <time.h>
 #include <stdbool.h>
-#define NB_SALLE_MAX 10
+#include "modeCombat.h"
+#define NB_SALLE_MAX 8
 #define LONG_MAX 20
 #define LARG_MAX 7
+#define VIOLET 10
 
 // ********************** DECLARATION VARIABLES ************************
   WINDOW *boite;
@@ -21,11 +23,11 @@ int relative_Y=0;
 
 
 //structure salle
-typedef struct Position{
+/*typedef struct Position{
   int x;
   int y;
 
-} Position;
+} Position;*/
 
 //structure Salle
 typedef struct Salle {
@@ -60,8 +62,8 @@ Salle salleSpawn(Salle* p_map)
 {
   int y;  int x;
 
-  p_map[0].position.y= rand()%10+5;
-  p_map[0].position.x= rand()%20+30;
+  p_map[0].position.y= rand()%10+15;
+  p_map[0].position.x= rand()%20+40;
   p_map[0].largeur=(rand()%12)+3;
   p_map[0].longueur=(rand()%20)+3;
   y = p_map[0].position.y;
@@ -142,8 +144,8 @@ if(map==NULL)exit  (1);
     nouv_salle->position.y+=superpo2;
     nouv_salle->largeur-=superpo2;
   }
-  if(nouv_salle->position.y+nouv_salle->largeur>=LINES-6){
-    superpo2=nouv_salle->position.y+1+nouv_salle->largeur-(LINES-7) ;
+  if(nouv_salle->position.y+nouv_salle->largeur>=LINES){
+    superpo2=nouv_salle->position.y+1+nouv_salle->largeur-(LINES-1) ;
     nouv_salle->largeur-=superpo2;
   }
   if(nouv_salle->position.x+nouv_salle->longueur<=0){
@@ -236,10 +238,7 @@ int indice3;
 int posX_ind_porte = p_map[num].pos_porte[ind_porte].x; //on va perdre ces coordonnées dans...
 int posY_ind_porte = p_map[num].pos_porte[ind_porte].y; // ...le prosesus donc on les copie
     
-      /*  mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
-          mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
-          mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
-          mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');*/
+      
 switch (salle->nb_porte) {
 case 1:
   //ne rien faire
@@ -668,10 +667,10 @@ break;
         p_map[num].pos_porte[ind_porte].x = posX_ind_porte;     // on recopie les cordonnées
         p_map[num].pos_porte[ind_porte].y = posY_ind_porte;     // qu'on avais perdu plus tot
 
-        mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
+        /*mvaddch(salle->pos_porte[0].y, salle->pos_porte[0].x, '/');
         mvaddch(salle->pos_porte[1].y, salle->pos_porte[1].x, '/');
         mvaddch(salle->pos_porte[2].y, salle->pos_porte[2].x, '/');
-        mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');
+        mvaddch(salle->pos_porte[3].y, salle->pos_porte[3].x, '/');*/
 
 }
 
@@ -769,7 +768,7 @@ int l_fin=l+map[indice].largeur;
 
   
   //afficher la salle
-  for(int i=l; i<=l_fin; i++)
+  /*for(int i=l; i<=l_fin; i++)
   {
     for(int j=L; j<=L_fin; j++)
     {
@@ -788,7 +787,7 @@ int l_fin=l+map[indice].largeur;
     }  
     move(i+1,L);
    
-  }
+  }*/
 
   createurPorte(map, indice, ind_porte);
   compteur_porte+=(map[indice].nb_porte-1);//compte le nombre de nouvelle porte crée
@@ -797,10 +796,10 @@ int l_fin=l+map[indice].largeur;
 if(monstre.existe==1){
   monstre.position.y=map[indice].position.y+1+rand()%(map[indice].largeur-2);
   monstre.position.x=map[indice].position.x+1+rand()%(map[indice].longueur-2);
-  mvaddch(monstre.position.y,monstre.position.x,'!');
+  //mvaddch(monstre.position.y,monstre.position.x,'!');
 
 }
-  mvaddch(y,x,'/');
+  //mvaddch(y,x,'/');
   //mvaddch(place_perso.y,place_perso.x,'@');
   //faire des porte sachant que 1 porte deja faite
 
@@ -809,10 +808,10 @@ if(monstre.existe==1){
 
 }
 
-void combat(void){
+/*void combat(void){
   //a remplir
 
-}
+}*/
 void item(void){
   //a remplir
 
@@ -859,10 +858,78 @@ int l_fin=l+nouv_salle.largeur;
 
 
 }
+int porteBloquee(int y,int x,char cote){
+  switch (cote){
+  case 'h':
+    if((y-1<=0)||mvinch(y-1, x)== '#'|| mvinch(y-2, x)== '#'|| mvinch(y-3, x)== '#'|| mvinch(y-1, x-1)== '#'||mvinch(y-1, x+1)== '#'||mvinch(y-4, x)== '#' )
+    {
+      mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
+      mvprintw(LINES-3,1,"impossible de passer");
+      if(compteur_porte==nb_salle){
+        monstre.existe=1;
+        monstre.position.y=y+2-relative_Y;
+        monstre.position.x=x-relative_X ;        
+      }
+      compteur_porte--;
+      getch();
+      return 1;
+    }
+    break;
+  case 'b' :
+    if((y+1>=LINES-2)||(mvinch(y+1, x)== '#')|| (mvinch(y+2, x)== '#')||( mvinch(y+3, x)== '#')|| (mvinch(y+1, x-1)== '#')||(mvinch(y+1, x+1)== '#')||(mvinch(y+4, x)== '#' ))
+    {
+      mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
+      mvprintw(LINES-3,1,"impossible de passer");
+      if(compteur_porte==nb_salle){
+        monstre.existe=1;
+        monstre.position.y=y-2-relative_Y;
+        monstre.position.x=x-relative_X;        
+      }
+      compteur_porte--;
+      getch();
+      return 1;
+    }
+    break;
+  case 'g' :
+    if((x-1<=0)||mvinch(y, x-1)== '#'|| mvinch(y, x-2)== '#'|| mvinch(y, x-3)== '#'|| mvinch(y-1, x-1)== '#'||mvinch(y+1, x-1)== '#'||mvinch(y, x-4)== '#' )
+    {
+      mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
+      mvprintw(LINES-3,1,"impossible de passer");
+      if(compteur_porte==nb_salle){
+        monstre.existe=1;
+        monstre.position.y=y-relative_Y;
+        monstre.position.x=x+2-relative_X;        
+      }
+      compteur_porte--;
+      getch();
+      return 1;
+    }
+    break;
+  case 'd':
+    if((x-1>=COLS-2)||mvinch(y, x+1)== '#'|| mvinch(y, x+2)== '#'|| mvinch(y, x+3)== '#'|| mvinch(y-1, x+1)== '#'||mvinch(y+1, x+1)== '#'||mvinch(y, x+4)== '#' )
+    {
+      mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
+      mvprintw(LINES-3,1,"impossible de passer");
+      if(compteur_porte==nb_salle){
+        monstre.existe=1;
+        monstre.position.y=y-relative_Y;
+        monstre.position.x=x-2-relative_X;        
+      }
+      compteur_porte--;
+      getch();
+      return 1;
+    }
+    break;
+  default :
+    break;
+
+} return 0;
+
+}
 
 void mouvementRelatif(Salle *map, int indice, int posY, int posX){
 
-for (int a = 1; a < LINES-6; a++)
+for (int a = 1; a < LINES-10; a++)
       {
         for (int b = 1; b < COLS-31; b++)
         {
@@ -901,7 +968,6 @@ Salle nouv_salle;
       }
 
 
-
     //ajouter les portes
             mvaddch(nouv_salle.pos_porte[0].y+relative_Y, nouv_salle.pos_porte[0].x+relative_X, '/');
             mvaddch(nouv_salle.pos_porte[1].y+relative_Y, nouv_salle.pos_porte[1].x+relative_X, '/');
@@ -914,14 +980,36 @@ Salle nouv_salle;
             }
             mvaddch(posY+relative_Y,posX+relative_X,'@');
             contour();
+            mvprintw(LINES-4, COLS-25,"posY: %d   LINES=%d",posY, LINES);
+            mvprintw(LINES-3, COLS-25,"posX: %d   COLS=%d",posX, COLS);
   }
+//puis ne laisser apparaitre qu'un champs reduit de vison
+  for (int i=1; i<LINES-10; i++){
+            for (int j=1; j<=COLS-31;j++){
+              if(((j>relative_X+posX+6||j<relative_X+posX-6)|| (i>relative_Y+posY+5||i<relative_Y+posY-5))){
+                mvaddch(i, j, ' ');
+              }
+            }
+          }
+
+//nom du jeu  
+    attron(COLOR_PAIR(3));
+      mvprintw(LINES-8, 23 , "_________                      .__         _____.___.                  .___            ");
+      mvprintw(LINES-7, 23 , "\\_   ___ \\  ____  ______ _____ |__| ____   \\__  |   | ____   ____    __| _/___________ ");
+      mvprintw(LINES-6, 23 , "/    \\  \\/ /  _ \\/  ___//     \\|  |/ ___\\   /   |   |/  _ \\ /    \\  / __ |/ __ \\_  __ \\");
+      mvprintw(LINES-5, 23 , "\\     \\___(  <_> )___ \\|  Y Y  \\  \\  \\___   \\____   (  <_> )   |  \\/ /_/ \\  ___/|  | \\/");
+      mvprintw(LINES-4, 23 , " \\______  /\\____/____  >__|_|  /__|\\___  >  / ______|\\____/|___|  /\\____ |\\___  >__|   ");
+      mvprintw(LINES-3, 23 , "        \\/           \\/      \\/        \\/   \\/                  \\/      \\/    \\/       ");
+    attroff(COLOR_PAIR(3));
+
+
 }
 
 void mouvementPerso(Salle *map){
 
   int c;char ver; int indice=0;
   int posX=map[0].position.x + map[0].longueur/2;
-  int posY=map[0].position.y+map[0].largeur/2; //initialisation pos
+  int posY=map[0].position.y+map[0].largeur/2; //initialisation position de depart
   keypad(stdscr, TRUE);
   mvaddch(posY, posX, '@');
   refresh();
@@ -941,30 +1029,27 @@ void mouvementPerso(Salle *map){
               item();
               break;
             case '/':
-              mvaddch(posY, posX, ' ');
+              //mvaddch(posY, posX, ' ');
               if(!decouverte[posY-1][posX])
               {
-                if(mvinch(posY-5,posX)=='#'||mvinch(posY-2,posX)=='#'||mvinch(posY-3,posX)=='#'||mvinch(posY-4,posX)=='#')
+                if (porteBloquee(posY-1+relative_Y, posX+relative_X,'h'))
                 {
-                /*  
-                  mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
-                  mvprintw(LINES-3,1,"impossible de passer");
-                  */
                   posY+=3; relative_Y-=3;
                 }
 
                 else createurSalle( map, posY-1, posX, 'h', ++indice); 
               }
               posY-=3; relative_Y+=3;
-              mvaddch(posY, posX, '@');
+              //mvaddch(posY, posX, '@');
               break;
             case '#':
               break;
 
 
             default: 
-              mvaddch(posY, posX, ' ');
-              mvaddch(--posY, posX, '@');
+              //mvaddch(posY, posX, ' ');
+              posY--;
+              //mvaddch(--posY, posX, '@');
               relative_Y++;
               break;
         }
@@ -982,29 +1067,26 @@ void mouvementPerso(Salle *map){
             item();
             break;
           case '/':
-            mvaddch(posY, posX, ' ');
+            //mvaddch(posY, posX, ' ');
             if(!decouverte[posY+1][posX])
             {
-              if(mvinch(posY+5,posX)=='#'||mvinch(posY+2,posX)=='#'||mvinch(posY+3,posX)=='#'||mvinch(posY+4,posX)=='#')
+              if (porteBloquee(posY+1+relative_Y, posX+relative_X,'b'))
               {
-              /*
-              mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
-              mvprintw(LINES-3,1,"impossible de passer");
-              */
-              posY-=3; relative_Y+=3;
+                posY-=3; relative_Y+=3;
               }
 
               else createurSalle( map, posY+1, posX, 'b', ++indice);
             }
             posY+=3; relative_Y-=3; 
-            mvaddch(posY, posX, '@');
+            //mvaddch(posY, posX, '@');
             break;
           case '#':
             break;
           default :
-            mvaddch(posY, posX, ' ');
-            mvaddch(++posY, posX, '@');
+            //mvaddch(posY, posX, ' ');
+            //mvaddch(++posY, posX, '@');
             relative_Y--;
+            posY++;
             break;
           }
           refresh();
@@ -1022,29 +1104,26 @@ void mouvementPerso(Salle *map){
             item();
             break;
           case '/':
-            mvaddch(posY, posX, ' ');
+            //mvaddch(posY, posX, ' ');
             if(!decouverte[posY][posX-1])
             {
-              if(mvinch(posY,posX-5)=='#'||mvinch(posY,posX-2)=='#'||mvinch(posY,posX-3)=='#'||mvinch(posY,posX-4)=='#')
+              if (porteBloquee(posY+relative_Y, posX-1+relative_X,'g'))
               {
-              /*
-              mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
-              mvprintw(LINES-3,1,"impossible de passer");
-              */
-              posX+=3;relative_X-=3;
+                posX+=3;relative_X-=3;
               }
 
               else createurSalle( map, posY, posX-1, 'g', ++indice); 
             }
             posX-=3; relative_X+=3;
-            mvaddch(posY, posX, '@'); 
+            //mvaddch(posY, posX, '@'); 
             break;
           case '#':
             break;
           default :
-            mvaddch(posY, posX, ' ');
-            mvaddch(posY, --posX, '@');
+            //mvaddch(posY, posX, ' ');
+            //mvaddch(posY, --posX, '@');
             relative_X++;
+            posX--;
             break;
           }
           refresh();
@@ -1060,29 +1139,26 @@ void mouvementPerso(Salle *map){
             item();
             break;
           case '/': 
-            mvaddch(posY, posX, ' ');
+            //mvaddch(posY, posX, ' ');
             if(!decouverte[posY][posX+1])
             {
-              if(mvinch(posY,posX+5)=='#'||mvinch(posY,posX+2)=='#'||mvinch(posY,posX+3)=='#'||mvinch(posY,posX+4)=='#')
+              if (porteBloquee(posY+relative_Y, posX+1+relative_X,'d'))
               {
-              /*
-              mvprintw( LINES-4, 1,"cette porte est bloquee par des debris intergalactique");
-              mvprintw(LINES-3,1,"impossible de passer");
-              */
-              posX-=3; relative_X+=3;
+                posX-=3; relative_X+=3;
               }
               else createurSalle( map, posY, posX+1, 'd', ++indice); 
             }
             posX+=3; relative_X-=3;
-            mvaddch(posY, posX, '@');
+            //mvaddch(posY, posX, '@');
           
             break;
           case '#':
             break;
           default :
-            mvaddch(posY, posX, ' ');
-            mvaddch(posY, ++posX, '@');
+            //mvaddch(posY, posX, ' ');
+            //mvaddch(posY, ++posX, '@');
             relative_X--;
+            posX++;
             break;
           }
          refresh();
@@ -1101,16 +1177,24 @@ void mouvementPerso(Salle *map){
 
 
 void contour(){
-  for(int i=0; i<=LINES-6; i++)
+  for(int i=0; i<=LINES; i++)
   {
     for(int j=0; j<=COLS;j++)
     {
-     if (i==0 || i== LINES-6){
+     if (i==0 || i== LINES-10){
+      attron(COLOR_PAIR(1+j%2));
       mvaddch(i,j,'#');
+      attroff(COLOR_PAIR(1+j%2));
      } 
      else if (j==0||j==COLS-30||j==COLS-1)
      {
+       attron(COLOR_PAIR(1+i%2));
        mvaddch(i,j,'#');
+       attroff(COLOR_PAIR(1+i%2));
+     }
+     else if(i>LINES-10)
+     {
+       mvaddch(i,j,' ');      
      }
     }
   }
@@ -1121,7 +1205,7 @@ void contour(){
 //********************** FONCTION MAIN ************************
 
 int main(){
-  srand(9); 
+  srand(50); 
   initscr();
   Salle* map=NULL;
   map =createurMap(&nb_salle);
@@ -1134,6 +1218,12 @@ int main(){
     for (int j=0; j<= COLS; j++) 
       decouverte[i][j]=0;
   }
+  start_color();
+  init_pair(1,VIOLET,0);
+  init_pair(2,6,0);
+  init_color(VIOLET, 250,25,255);
+  init_pair(3,7,VIOLET);
+
   contour();
   //refresh();
   noecho();
