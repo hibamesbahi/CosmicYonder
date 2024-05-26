@@ -1,0 +1,4 @@
+Bienvenue à bord de la navette spatiale. 
+Un danger imminent a été détecté dans le système de survie. 
+Vous devez localiser et réparer la fuite avant qu'il ne soit trop tard.
+Bonne chance, commandant.
