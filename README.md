@@ -1,15 +1,8 @@
 # CosmicYonder
+Cosmic Yonder est un jeu de type Roguelike.
+Pour demarer une partie selactionner nouvelle partie
+La fonctionalité restore partie de fonctionne malheureusement pas par faute de temps
+A n'importe quel moment dans le jeu, le menu est accessible il suffit de taper 'm'
+pour sauvegarder il faut taper 'q'
+pour quitter le jeu il faut d'abords acceder au menu avec la touche m puis quitter avec q
 
-
-
-
-
-
-
-
-_________                      .__         _____.___.                  .___            
-\_   ___ \  ____  ______ _____ |__| ____   \__  |   | ____   ____    __| _/___________ 
-/    \  \/ /  _ \/  ___//     \|  |/ ___\   /   |   |/  _ \ /    \  / __ |/ __ \_  __ \
-\     \___(  <_> )___ \|  Y Y  \  \  \___   \____   (  <_> )   |  \/ /_/ \  ___/|  | \/
- \______  /\____/____  >__|_|  /__|\___  >  / ______|\____/|___|  /\____ |\___  >__|   
-        \/           \/      \/        \/   \/                  \/      \/    \/      
