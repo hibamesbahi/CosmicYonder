@@ -4,6 +4,9 @@
 #include <time.h>
 #include <stdbool.h>
 #include "declaration.h"
+
+#define NB_SALLE_MAX 3 //entre 6 et 9 salles
+
 extern bool** decouverte;
 
 
@@ -13,7 +16,7 @@ Salle salleSpawn(Salle* p_map)
 {
   int y;  int x;
 
-  p_map[0].position.y= rand()%10+15;
+  p_map[0].position.y= rand()%10+10;
   p_map[0].position.x= rand()%20+40;
   p_map[0].largeur=(rand()%12)+3;
   p_map[0].longueur=(rand()%20)+3;
@@ -77,7 +80,7 @@ Salle* createurMap(int *nb_salle){
     //arrengement des salle depend de la graine et de l'ordre.
   
   //graine = rand(); //graine temporaire
-  *nb_salle= 4+(graine%NB_SALLE_MAX);
+  *nb_salle= 6+(rand()%NB_SALLE_MAX);
   p_map=malloc(sizeof(Salle)*(*nb_salle));  //free a la fin
     if(p_map==NULL){printw("erreur allocation memeoire");exit(1);}
   p_map[0]=salleSpawn(p_map);
