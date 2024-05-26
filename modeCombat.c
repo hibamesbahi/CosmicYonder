@@ -1,49 +1,9 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
 #include <ncurses.h>
 #include <stdbool.h>
 #include "declaration.h"
 
 extern bool** decouverte;
 
-
- // Definir Position
-/*typedef struct Position{
-      int x;
-      int y;
-  } Position;
-
-  // Definir Monstre
-typedef struct Monstre_combat{
-      Position pos_monstre;
-      int vie;
-      int attaque;
-  } Monstre_combat;
-
-  // Definir Joueur
-typedef struct Joueur{
-      Position pos_joueur;
-      int attaque;
-  } Joueur;
-
-  // Definir les attaques du joueur
-typedef struct Attaque{
-      Position pos_atq;
-      int active;
-  } Attaque;
-
-
-
-
-
-  // Fonctions pour afficher le jeu
-  void init_jeu(Joueur *joueur, Monstre_combat *monstre, Attaque *attaque);
-  void dessin_jeu(Joueur joueur, Monstre_combat monstre, Attaque attaque);
-  void maj_attaque(Attaque *attaque);
-  void maj_monstre(Monstre_combat *monstre);
-  void verif_collision(Joueur joueur, Monstre_combat *monstre, Attaque *attaque);
-  void barre_vie(Monstre_combat monstre);*/
   
 
   //Fonction Combat
@@ -55,7 +15,6 @@ typedef struct Attaque{
       curs_set(0);
       nodelay(stdscr, 1);
       keypad(stdscr, 1);
-      srand(time(NULL));
 
       Joueur joueur;
       Monstre_combat monstre;
@@ -171,7 +130,7 @@ mvprintw(LINES-4, 5 ,"/_/  /_/\\____/\\__,_/\\___/   \\____/\\____/_/ /_/ /_/_._
   void maj_monstre(Monstre_combat *monstre) {
       static int direction = 1;
       monstre->pos_monstre.x += direction;
-      if (monstre->pos_monstre.x <= 0 || monstre->pos_monstre.x >= COLS - 10) {
+      if (monstre->pos_monstre.x <= 0 || monstre->pos_monstre.x >= COLS - 11) {
           direction = -direction;
           monstre->pos_monstre.y++;
       }
