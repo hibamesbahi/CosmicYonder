@@ -93,6 +93,7 @@ typedef struct Item{
 	void createurPorte(Salle *p_map, int num, int ind_porte);
 	int porteBloquee(int y,int x,char cote);
 	void item(void);
+	void genererItems(Salle* salle);
 
 
 
@@ -132,6 +133,8 @@ extern char nom[16];
 void NouvellePartie();
 void AnciennePartie();
 void Menu();
+
+
 
 
 #endif
