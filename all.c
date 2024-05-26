@@ -4,7 +4,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include "modeCombat.h"
-#define NB_SALLE_MAX 8
+#define NB_SALLE_MAX 8 
 #define LONG_MAX 20
 #define LARG_MAX 7
 #define VIOLET 10
