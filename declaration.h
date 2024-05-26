@@ -73,7 +73,7 @@ typedef struct Item{
   int y;
   char type;
 
-};
+}Item;
 
 //map
 	Salle salleSpawn(Salle* p_map);
