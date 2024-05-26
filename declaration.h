@@ -1,7 +1,7 @@
 #ifndef DECLARATION_H
 #define DECLARATION_H
 
-#define NB_SALLE_MAX 8
+#define NB_SALLE_MAX 3
 #define LONG_MAX 20
 #define LARG_MAX 7
 #define VIOLET 10
@@ -17,6 +17,14 @@ extern int compteur_porte;
 extern int relative_X;
 extern int relative_Y;
 extern int graine;
+extern int posY;
+extern int posX;
+extern int experience;
+extern clock_t temps;
+extern char nom[16];
+extern int indice;
+extern clock_t debut;
+extern clock_t fin;
 
 
 
@@ -38,6 +46,7 @@ typedef struct Salle {
   Position items[3];
 
 }Salle ;
+
 
 typedef struct monstre {
 Position position;
@@ -69,10 +78,8 @@ typedef struct Attaque{
       int active;
   } Attaque;
 
-// structure Item
 typedef struct Item{
-  int x;
-  int y;
+  Position position;
 
 }Item;
 
@@ -84,6 +91,7 @@ typedef struct Item{
 //mouvement
 	void mouvementPerso(Salle *map);
 	void mouvementRelatif(Salle *map, int indice, int posY, int posX);
+	void sauvegarde (Salle* map, int indice);
 
 
 //salle
@@ -107,11 +115,11 @@ typedef struct Item{
   
 //niveaux
 extern int niveau;
-	void niveau1();
-	void niveau2();
-	void niveau3();
-	void niveau4();
-	void niveau5();
+	void niveau1(int mode);
+	void niveau2(int mode);
+	void niveau3(int mode);
+	void niveau4(int mode);
+	void niveau5(int mode);
 	void intiVariable();
 
 
@@ -122,18 +130,18 @@ extern int niveau;
 	
 	void afficherVictoire();
 
+	void afficherRestorer();
+
 	void afficherTexte(const char* fichier);
 
 //Menu
-extern int experience;
-extern int temps;
-extern char nom[16];
+
 
 void NouvellePartie();
 void AnciennePartie();
 void Menu();
-
-
+void sauvegarde(Salle *map, int indice);
+void restorer(char *nom);
 
 
 #endif
