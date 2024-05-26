@@ -30,10 +30,12 @@ typedef struct Position{
 //structure Salle
 typedef struct Salle {
   int nb_porte;
-  Position pos_porte[4];
+  int nombreItems;
   int longueur;
   int largeur; 
   Position position;
+  Position pos_porte[4];
+  Position items[3];
 
 }Salle ;
 
