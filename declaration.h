@@ -73,7 +73,6 @@ typedef struct Attaque{
 typedef struct Item{
   int x;
   int y;
-  char type;
 
 }Item;
 
